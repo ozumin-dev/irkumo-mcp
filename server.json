@@ -1,0 +1,32 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.irkumo/irkumo-mcp",
+  "title": "irkumo",
+  "description": "IR page and earnings release list URLs for 3,821 Japanese listed companies by code or name",
+  "websiteUrl": "https://irkumo.com",
+  "repository": {
+    "url": "https://github.com/ozumin-dev/irkumo-mcp",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "irkumo-mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "IRKUMO_API_KEY",
+          "description": "irkumo API key (ir_live_...). Free sign-up: https://api.irkumo.com/account/login",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

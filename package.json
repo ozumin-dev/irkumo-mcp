@@ -1,0 +1,45 @@
+{
+  "name": "irkumo-mcp",
+  "version": "0.1.1",
+  "mcpName": "com.irkumo/irkumo-mcp",
+  "description": "irkumo (IR Lookup API for Japanese listed companies) の MCP サーバ｡上場会社の IR ページ URL と決算短信一覧 URL を証券コード･社名･別名から引く",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "irkumo",
+    "ir",
+    "japan",
+    "stock",
+    "tse",
+    "edinet"
+  ],
+  "homepage": "https://irkumo.com",
+  "author": "ozumin",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "irkumo-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.19",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7"
+  }
+}
