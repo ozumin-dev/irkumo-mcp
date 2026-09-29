@@ -57,6 +57,14 @@ export const URL_FIELDS = new Set([
   "tanshin_basis",
 ]);
 
+/** 鍵なしで呼べるエンドポイント (API 側の無認証の道)｡ */
+const NO_AUTH_PATHS = ["/v1/fields", "/v1/meta"];
+
+export const MISSING_KEY_MESSAGE =
+  "IRKUMO_API_KEY が設定されていません｡https://api.irkumo.com/account/login でメールアドレスだけで無料登録でき (お試し 50 クレジット)､" +
+  "アカウントのページで作った鍵を MCP の設定の env の IRKUMO_API_KEY に入れてください｡" +
+  " / IRKUMO_API_KEY is not set. Sign up free (50 trial credits) at https://api.irkumo.com/account/login, create a key and set it as IRKUMO_API_KEY.";
+
 export class IrkumoClient {
   readonly apiKey: string;
   readonly baseUrl: string;
@@ -79,7 +87,16 @@ export class IrkumoClient {
   async request(path: string, init?: RequestInit): Promise<ClientResult> {
     const url = `${this.baseUrl}${path}`;
     const headers = new Headers(init?.headers);
-    headers.set("X-API-Key", this.apiKey);
+    if (this.apiKey) {
+      headers.set("X-API-Key", this.apiKey);
+    } else if (!NO_AUTH_PATHS.some((p) => path === p || path.startsWith(`${p}?`))) {
+      // 鍵なしで起動したとき (0.1.2): API を呼ばずに登録の案内を返す
+      return {
+        ok: false,
+        status: 401,
+        text: this.formatWithCredits(MISSING_KEY_MESSAGE, 0, "-"),
+      };
+    }
 
     let res: Response;
     try {

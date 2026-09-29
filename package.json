@@ -1,6 +1,6 @@
 {
   "name": "irkumo-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "mcpName": "com.irkumo/irkumo-mcp",
   "description": "irkumo (IR Lookup API for Japanese listed companies) の MCP サーバ｡上場会社の IR ページ URL と決算短信一覧 URL を証券コード･社名･別名から引く",
   "keywords": [

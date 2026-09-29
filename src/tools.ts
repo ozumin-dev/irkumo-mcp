@@ -121,7 +121,7 @@ export function registerTools(server: McpServer, client: IrkumoClient): void {
 export function createMcpServer(client: IrkumoClient): McpServer {
   const server = new McpServer({
     name: "irkumo-mcp",
-    version: "0.1.1",
+    version: "0.1.2",
   });
   registerTools(server, client);
   return server;

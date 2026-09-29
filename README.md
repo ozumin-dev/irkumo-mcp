@@ -51,7 +51,7 @@ node dist/index.js
 
 | 変数名 | 必須 | 既定値 | 説明 |
 |---|---|---|---|
-| IRKUMO_API_KEY | はい | なし | irkumo API キー (ir_live_... で始まる文字列)｡未設定時はエラーとなり終了コード 1 で終了します |
+| IRKUMO_API_KEY | はい | なし | irkumo API キー (ir_live_... で始まる文字列)｡未設定でも起動はし､道具の一覧と list_fields は使えますが､ほかの道具は登録の案内を返します |
 | IRKUMO_API_BASE | いいえ | https://api.irkumo.com | irkumo API のベース URL｡ローカル開発時は http://127.0.0.1:8787 などを指定します |
 | IRKUMO_SITE_URL | いいえ | https://irkumo.com | サイトのベース URL｡402 残高不足時の購入案内リンクに使用されます |
 

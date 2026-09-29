@@ -469,18 +469,27 @@ describe("irkumo-mcp 道具テスト", () => {
     expect(text).toContain("credits_charged: 0 / credits_remaining: -");
   });
 
-  // 10. IRKUMO_API_KEY 無しの終了判定
-  it("IRKUMO_API_KEY 未設定の終了判定", () => {
-    const originalEnv = process.env.IRKUMO_API_KEY;
-    try {
-      delete process.env.IRKUMO_API_KEY;
-      const apiKey = process.env.IRKUMO_API_KEY;
-      const isMissing = !apiKey || apiKey.trim() === "";
-      expect(isMissing).toBe(true);
-    } finally {
-      if (originalEnv !== undefined) {
-        process.env.IRKUMO_API_KEY = originalEnv;
-      }
-    }
+  // 10. 鍵なしでも起動し (0.1.2)､道具の一覧と list_fields は使え､鍵が要る道具は API を呼ばずに登録の案内を返す
+  it("IRKUMO_API_KEY 未設定: 道具一覧と list_fields は動き､get_company は fetch せず案内を返す", async () => {
+    const calls: string[] = [];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      calls.push(input.toString());
+      return new Response(JSON.stringify({ fields: [] }), { status: 200, headers: { "Content-Type": "application/json" } });
+    }) as unknown as typeof fetch;
+    const { mcpClient } = await setupTestServer(fetchMock, "");
+
+    const tools = await mcpClient.listTools();
+    expect(tools.tools.map((t) => t.name).sort()).toEqual(
+      ["get_balance", "get_company", "list_changes", "list_fields", "resolve_company", "search_companies"]
+    );
+
+    // list_fields は無認証の /v1/fields と /v1/meta を呼ぶ
+    await mcpClient.callTool({ name: "list_fields", arguments: {} });
+    expect(calls.map((u) => new URL(u).pathname).sort()).toEqual(["/v1/fields", "/v1/meta"]);
+
+    const res: any = await mcpClient.callTool({ name: "get_company", arguments: { code: "7203" } });
+    expect(calls).toHaveLength(2);
+    expect(res.content[0].text).toContain("IRKUMO_API_KEY が設定されていません");
+    expect(res.content[0].text).toContain("https://api.irkumo.com/account/login");
   });
 });
