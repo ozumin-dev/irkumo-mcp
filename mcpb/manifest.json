@@ -1,0 +1,57 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/dist/mcpb-manifest-v0.3.schema.json",
+  "manifest_version": "0.3",
+  "name": "irkumo-mcp",
+  "display_name": "irkumo",
+  "version": "__VERSION__",
+  "description": "IR page and earnings release list URLs for 3,821 Japanese listed companies by code or name",
+  "long_description": "irkumo (https://irkumo.com) は日本の上場会社 3,821 社の IR ページ URL と決算短信一覧 URL を､証券コード･社名･旧社名･ブランド名から引ける API です｡この拡張はその MCP サーバです｡API キーは https://api.irkumo.com/account/login からメールアドレスだけで無料登録でき (お試し 50 クレジット)､アカウントのページで作成できます｡\n\nirkumo is an API that returns the investor relations (IR) page URL and the earnings release (kessan tanshin) list URL of 3,821 companies listed in Japan, looked up by securities code, company name, former name or brand name. Free sign-up with 50 trial credits at https://api.irkumo.com/account/login (no card required).",
+  "author": {
+    "name": "ozumin",
+    "url": "https://irkumo.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozumin-dev/irkumo-mcp"
+  },
+  "homepage": "https://irkumo.com",
+  "documentation": "https://irkumo.com/docs.html",
+  "support": "https://irkumo.com/tokushoho.html",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "IRKUMO_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "resolve_company", "description": "社名や別名から最上位 1 社を特定してコードと名前を返す (1 クレジット､0 件は 0)" },
+    { "name": "search_companies", "description": "社名や別名から会社候補の一覧を検索する (1 クレジット､0 件は 0)" },
+    { "name": "get_company", "description": "証券コードで 1 社の IR ページ URL などの列を取る (1 列 1 クレジット)" },
+    { "name": "list_changes", "description": "指定時点以降に変わった行を取る (1 行 1 クレジット)" },
+    { "name": "get_balance", "description": "クレジット残高とロットの期限を見る (0)" },
+    { "name": "list_fields", "description": "列の一覧･単価･出典を見る (0)" }
+  ],
+  "keywords": ["mcp", "irkumo", "ir", "investor-relations", "japan", "stock", "tse", "edinet", "finance"],
+  "license": "MIT",
+  "privacy_policies": ["https://irkumo.com/privacy.html"],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=20.0.0"
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "irkumo API key",
+      "description": "ir_live_ で始まる 32 文字の鍵｡https://api.irkumo.com/account/login で無料登録して作成できます (お試し 50 クレジット) / Your irkumo API key (ir_live_...). Free sign-up: https://api.irkumo.com/account/login",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}
